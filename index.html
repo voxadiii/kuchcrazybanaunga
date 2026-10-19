@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Infinite Dream For Tinu 🌸🏰</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gaegu:wght@400;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    width: 100vw;
+    overflow-x: hidden;
+    font-family: 'Quicksand', sans-serif;
+    background: #0b0205;
+    color: #fff;
+  }
+
+  /* Audio player hidden */
+  #bgm { display: none; }
+
+  /* ── SECTION 1: THE MAGICAL GARDEN ── */
+  .section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #sec-garden {
+    background: radial-gradient(circle at center, #240612 0%, #0d0105 70%, #020001 100%);
+  }
+
+  canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  .garden-ui {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    background: rgba(25, 5, 12, 0.75);
+    backdrop-filter: blur(10px);
+    padding: 30px 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 140, 165, 0.3);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    max-width: 90%;
+    width: 380px;
+  }
+
+  .garden-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: #ffccd5;
+    margin-bottom: 8px;
+  }
+
+  .garden-subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: #ff8fa3;
+    margin-bottom: 20px;
+  }
+
+  /* Fake Aesthetic QR Box */
+  .qr-box {
+    width: 150px;
+    height: 150px;
+    background: #fff;
+    margin: 0 auto 18px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+    padding: 10px;
+  }
+  .qr-box svg { width: 100%; height: 100%; fill: #8c1d40; }
+
+  .scroll-hint-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #ff4d6d, #c9184a);
+    color: white;
+    padding: 10px 28px;
+    border-radius: 30px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+    transition: transform 0.2s;
+  }
+  .scroll-hint-btn:active { transform: scale(0.95); }
+
+  /* ── SECTION 2: THE CASTLE & SUNSET ── */
+  #sec-castle {
+    background: linear-gradient(180deg, #1a0210 0%, #4a1525 35%, #8c3b4e 65%, #2c0c16 100%);
+    position: relative;
+  }
+
+  .sunset-sun {
+    position: absolute;
+    top: 15%;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, #fff0f3 0%, #ffb703 40%, #fb8500 80%);
+    border-radius: 50%;
+    box-shadow: 0 0 60px #fb8500, 0 0 120px #ffb703;
+    z-index: 1;
+  }
+
+  /* Castle Artwork via CSS / SVG Layer */
+  .castle-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 65vh;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .castle-ui-text {
+    position: absolute;
+    top: 40px;
+    text-align: center;
+    z-index: 10;
+    padding: 0 20px;
+  }
+  .castle-title {
+    font-family: 'Gaegu', cursive;
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    color: #fff0f3;
+    text-shadow: 0 0 20px rgba(255, 180, 200, 0.8);
+  }
+  .castle-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: #ffccd5;
+    margin-top: 4px;
+  }
+
+  /* Watermark Footer */
+  .watermark {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 20;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body onclick="playMusic()">
+
+<!-- Background Audio -->
+<audio id="bgm" loop preload="auto">
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 🌸 SECTION 1: THE GARDEN & FLOWERS -->
+<section class="section" id="sec-garden">
+  <canvas id="garden-canvas"></canvas>
+
+  <div class="garden-ui">
+    <div class="garden-title">For My Tinu 🌸</div>
+    <div class="garden-subtitle">She asked for flowers...</div>
+    
+    <!-- Aesthetic QR Code Graphic -->
+    <div class="qr-box">
+      <svg viewBox="0 0 24 24"><path d="M2,2H10V10H2V2M4,4V8H8V4H4M14,2H22V10H14V2M16,4V8H20V4H16M2,14H10V22H2V14M4,16V20H8V16H4M18,14V18H22V14H18M14,18V22H18V18H14M10,14H14V18H10V14M14,10H18V14H14V10M10,10H14V14H10V10Z"/></svg>
+    </div>
+
+    <p style="font-size: 0.85rem; color: #ffccd5; margin-bottom: 15px;">So I coded you the whole garden ✨</p>
+    <a href="#sec-castle" class="scroll-hint-btn">Visit Our Castle ↓</a>
+  </div>
+
+  <div class="watermark">Crafted with all my love • © Aditya | All Rights Reserved</div>
+</section>
+
+
+<!-- 🏰 SECTION 2: THE SUNSET CASTLE -->
+<section class="section" id="sec-castle">
+  <div class="sunset-sun"></div>
+
+  <div class="castle-ui-text">
+    <h2 class="castle-title">Our Little Castle In The Sky</h2>
+    <p class="castle-sub">Where sunsets belong only to us... ❤️</p>
+  </div>
+
+  <!-- Castle & Couple Silhouette Canvas -->
+  <div class="castle-container">
+    <canvas id="castle-canvas"></canvas>
+  </div>
+
+  <div class="watermark" style="color: rgba(255,255,255,0.6);">Crafted with all my love • © Aditya | All Rights Reserved</div>
+</section>
+
+<script>
+/* ── MUSIC TRIGGER ───────────────────────── */
+let musicPlayed = false;
+function playMusic() {
+  if (!musicPlayed) {
+    const bgm = document.getElementById('bgm');
+    bgm.play().catch(() => {});
+    musicPlayed = true;
+  }
+}
+
+/* ── GARDEN FLOWER BLOOM ANIMATION (SECTION 1) ── */
+const gCanvas = document.getElementById('garden-canvas');
+const gCtx = gCanvas.getContext('2d');
+let gW, gH;
+
+function resizeGarden() {
+  gW = gCanvas.width = window.innerWidth;
+  gH = gCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeGarden);
+resizeGarden();
+
+// Floating magical particles & glowing petals
+const particles = Array.from({length: 60}, () => ({
+  x: Math.random() * gW,
+  y: Math.random() * gH,
+  r: Math.random() * 2.5 + 0.5,
+  vy: -Math.random() * 0.6 - 0.2,
+  alpha: Math.random() * 0.7 + 0.2
+}));
+
+function renderGarden() {
+  gCtx.clearRect(0, 0, gW, gH);
+
+  particles.forEach(p => {
+    gCtx.beginPath();
+    gCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    gCtx.fillStyle = `rgba(255, 180, 205, ${p.alpha})`;
+    gCtx.shadowColor = '#ff4d6d';
+    gCtx.shadowBlur = 8;
+    gCtx.fill();
+    gCtx.shadowBlur = 0;
+
+    p.y += p.vy;
+    if (p.y < 0) { p.y = gH + 10; p.x = Math.random() * gW; }
+  });
+
+  requestAnimationFrame(renderGarden);
+}
+renderGarden();
+
+
+/* ── CASTLE & SUNSET SCENERY (SECTION 2) ── */
+const cCanvas = document.getElementById('castle-canvas');
+const cCtx = cCanvas.getContext('2d');
+let cW, cH;
+
+function resizeCastle() {
+  cW = cCanvas.width = window.innerWidth;
+  cH = cCanvas.height = window.innerHeight * 0.65;
+  drawCastleScene();
+}
+window.addEventListener('resize', resizeCastle);
+resizeCastle();
+
+function drawCastleScene() {
+  cCtx.clearRect(0, 0, cW, cH);
+
+  const cx = cW / 2;
+  const baseY = cH;
+
+  // 1. Silhouette Hills / Mountains
+  cCtx.fillStyle = '#1e0710';
+  cCtx.beginPath();
+  cCtx.moveTo(0, baseY);
+  cCtx.lineTo(0, baseY - 80);
+  cCtx.quadraticCurveTo(cx - 150, baseY - 180, cx - 80, baseY - 100);
+  cCtx.quadraticCurveTo(cx, baseY - 240, cx + 100, baseY - 120);
+  cCtx.quadraticCurveTo(cx + 200, baseY - 190, cW, baseY - 70);
+  cCtx.lineTo(cW, baseY);
+  cCtx.fill();
+
+  // 2. Castle Architecture Silhouette
+  cCtx.fillStyle = '#0f0308';
+  const castleWidth = Math.min(cW * 0.5, 380);
+  const castleX = cx - castleWidth / 2;
+  const castleY = baseY - 160;
+
+  // Main walls
+  cCtx.fillRect(castleX + 40, castleY + 40, castleWidth - 80, 120);
+
+  // Towers & Spires
+  // Left Tower
+  cCtx.fillRect(castleX, castleY, 50, 160);
+  cCtx.beginPath();
+  cCtx.moveTo(castleX - 10, castleY);
+  cCtx.lineTo(castleX + 25, castleY - 60);
+  cCtx.lineTo(castleX + 60, castleY);
+  cCtx.fill();
+
+  // Right Tower
+  cCtx.fillRect(castleX + castleWidth - 50, castleY, 50, 160);
+  cCtx.beginPath();
+  cCtx.moveTo(castleX + castleWidth - 60, castleY);
+  cCtx.lineTo(castleX + castleWidth - 25, castleY - 60);
+  cCtx.lineTo(castleX + castleWidth + 10, castleY);
+  cCtx.fill();
+
+  // Center High Tower
+  cCtx.fillRect(castleX + castleWidth/2 - 35, castleY - 30, 70, 190);
+  cCtx.beginPath();
+  cCtx.moveTo(castleX + castleWidth/2 - 45, castleY - 30);
+  cCtx.lineTo(castleX + castleWidth/2, castleY - 95);
+  cCtx.lineTo(castleX + castleWidth/2 + 45, castleY - 30);
+  cCtx.fill();
+
+  // Warm Glowing Windows in Castle
+  cCtx.fillStyle = '#ffb703';
+  cCtx.shadowColor = '#ffb703';
+  cCtx.shadowBlur = 12;
+  // Window lights
+  cCtx.fillRect(castleX + 18, castleY + 30, 14, 25);
+  cCtx.fillRect(castleX + castleWidth - 32, castleY + 30, 14, 25);
+  cCtx.fillRect(castleX + castleWidth/2 - 12, castleY + 10, 24, 35);
+  cCtx.shadowBlur = 0;
+
+  // 3. Two People Sitting on the Castle Balcony/Roof
+  const roofY = castleY + 25;
+  const personY = roofY - 14;
+
+  // Boy (Blue doodle silhouette)
+  cCtx.fillStyle = '#1e88e5';
+  cCtx.beginPath();
+  cCtx.arc(cx - 18, personY - 8, 9, 0, Math.PI * 2); // Head
+  cCtx.fill();
+  cCtx.fillRect(cx - 25, personY, 14, 20); // Body
+
+  // Girl (Pink doodle silhouette - Tinu)
+  cCtx.fillStyle = '#ff6584';
+  cCtx.beginPath();
+  cCtx.arc(cx + 18, personY - 8, 9, 0, Math.PI * 2); // Head
+  cCtx.fill();
+  cCtx.fillRect(cx + 11, personY, 14, 20); // Body
+
+  // Little glowing heart floating between them
+  cCtx.fillStyle = '#ff4d6d';
+  cCtx.shadowColor = '#ff4d6d';
+  cCtx.shadowBlur = 10;
+  cCtx.beginPath();
+  cCtx.arc(cx, personY - 22, 5, 0, Math.PI * 2);
+  cCtx.fill();
+  cCtx.shadowBlur = 0;
+}
+</script>
+</body>
+</html>
